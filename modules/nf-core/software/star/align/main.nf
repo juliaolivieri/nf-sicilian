@@ -73,7 +73,7 @@ process STAR_ALIGN {
         $seq_center \\
         $options.args
 
-    if is_ss2 ; then
+    if $is_ss2 ; then
         STAR \\
             --genomeDir $index \\
             --readFilesIn $reads_v1  \\
