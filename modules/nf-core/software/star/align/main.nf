@@ -43,11 +43,14 @@ process STAR_ALIGN {
     script:
     def software   = getSoftwareName(task.process)
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def is_ss2     = params.smartseq2 ? true : false
     def ignore_gtf = params.star_ignore_sjdbgtf ? '' : "--sjdbGTFfile $gtf"
     def seq_center = params.seq_center ? "--outSAMattrRGline ID:$prefix 'CN:$params.seq_center' 'SM:$prefix'" : "--outSAMattrRGline ID:$prefix 'SM:$prefix'"
     def out_sam_type = (options.args.contains('--outSAMtype')) ? '' : '--outSAMtype BAM Unsorted'
     def mv_unsorted_bam = (options.args.contains('--outSAMtype BAM Unsorted SortedByCoordinate')) ? "mv ${prefix}.Aligned.out.bam ${prefix}.Aligned.unsort.out.bam" : ''
-    def reads_v2 = params.tenx ? "${reads[1]}" : "${reads}"
+    def reads_v1 = "${reads[1]}"
+    def reads_v2 = "${reads[1]}"
+//    def reads_v2 = params.tenx ? "${reads[1]}" : "${reads}"
     if (params.tenx) {
         if (params.skip_umitools) {
             // Skipping umi tools, so providing already-extracted R2 reads. No R1 at all --> take the first one
@@ -69,6 +72,18 @@ process STAR_ALIGN {
         $ignore_gtf \\
         $seq_center \\
         $options.args
+
+    if is_ss2 ; then
+        STAR \\
+            --genomeDir $index \\
+            --readFilesIn $reads_v1  \\
+            --runThreadN $task.cpus \\
+            --outFileNamePrefix ${prefix}.1 \\
+            $out_sam_type \\
+            $ignore_gtf \\
+            $seq_center \\
+            $options.args
+    fi
 
     $mv_unsorted_bam
 
