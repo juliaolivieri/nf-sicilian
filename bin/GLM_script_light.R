@@ -276,7 +276,7 @@ add_ensembl <- function(gtf_file,directory,class_input,is.SE){
   }
   
   # if(is.SE == 1){
-  genecount_file = paste(directory,list.files(directory, pattern = "*ReadsPerGene.out.tab", all.files = FALSE),sep = "")
+  genecount_file = paste(directory,list.files(directory, pattern = "*1ReadsPerGene.out.tab", all.files = FALSE),sep = "")
   # } else {
   #   genecount_file = paste(directory,list.files(directory, pattern = "*1ReadsPerGene.out.tab", all.files = FALSE),sep = "")
   # }
