@@ -604,7 +604,12 @@ def chim_refName(flags, cigars, offsets, rnames, ann, stranded_library):
 
 def readObj_refname(flag, cigar, seqname, position, ann, fill_char, stranded_library):
     flag_dict = {"0": "+", "1" : "-"}
-    read_strand = flag_dict[bin(flag)[-5]]
+
+    # read strand from SAM flag
+    try:
+      read_strand = flag_dict[bin(flag)[-5]]
+    except:
+      read_strand = "+"
     if "N" not in cigar:
         #    gene, strand = get_name_strand(seqname, int(position), ann) #ann.get_name_given_locus(seqname, int(position))
         gene, strand = ann.get_name_given_locus(
