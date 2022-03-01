@@ -60,7 +60,9 @@ process STAR_ALIGN {
             reads_v2 = "${reads[1]}"
         }
     } else {
-        reads_v2 = "${reads}"
+        reads_v2 = "${reads}[1]"
+        reads_v1 = "${reads}[0]"
+
     }
     """
     STAR \\
