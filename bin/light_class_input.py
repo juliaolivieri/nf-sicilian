@@ -296,17 +296,17 @@ def get_final_df(bam_files, j, suffixes, ann, UMI_bar, t0, gtf, stranded_library
                         if bam_read.has_tag("ch"):
                             count += 1
 
-                            # note: removing chim for this test ONLY; uncomment after
-#                            CI_dict = extract_info_chim(
-#                                CI_dict,
-#                                prev_read,
-#                                bam_read,
-#                                suffix,
-#                                alignFile,
-#                                ann,
-#                                UMI_bar,
-#                                stranded_library,
-#                            )
+                           # note: removing chim for this test ONLY; uncomment after
+                            CI_dict = extract_info_chim(
+                                CI_dict,
+                                prev_read,
+                                bam_read,
+                                suffix,
+                                alignFile,
+                                ann,
+                                UMI_bar,
+                                stranded_library,
+                            )
                             first = False
 
                         # add info from align read
