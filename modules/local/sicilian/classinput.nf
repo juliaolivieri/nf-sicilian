@@ -72,13 +72,14 @@ process SICILIAN_CLASSINPUT {
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     def outpath = './'
     def prefix     = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
+    def strand_opt = params.stranded ? "--stranded_library" : ""
     """
     light_class_input.py \\
         --outpath ${outpath} \\
         --gtf ${gtf} \\
         --annotator ${annotator} \\
         --bams ${bam} \\
-        --stranded_library \\
+        ${strand_opt} \\
         ${options.args}
     ls -lha 
     mv class_input.tsv ${prefix}__class_input.tsv
