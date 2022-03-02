@@ -21,7 +21,7 @@ include { SICILIAN_ANNSPLICES } from '../../modules/local/sicilian/annsplices.nf
 include { SICILIAN_CONSOLIDATE    } from '../../modules/local/sicilian/consolidate.nf'  addParams( options: params.consolidate_options )
 include { SICILIAN_PROCESS_CI_10X } from '../../modules/local/sicilian/processci10x.nf' addParams( options: params.process_ci_10x_options )
 include { SICILIAN_POSTPROCESS    } from '../../modules/local/sicilian/postprocess.nf'  addParams( options: params.postprocess_options )
-
+include { SICILIAN_CREATE_PLACEHOLDER    } from '../../modules/local/sicilian/create_placeholder.nf'
 
 workflow SICILIAN {
     take:
@@ -103,7 +103,7 @@ workflow SICILIAN {
         .collect()
         .dump( tag: 'class_input_files_collected' )
 
-    if (params.tenx || (!params.smartseq2)) {
+    if (params.tenx) {
             SICILIAN_PROCESS_CI_10X (
             ch_process_ci_concatenation_ids,
             ch_process_ci_class_inputs,
@@ -115,7 +115,8 @@ workflow SICILIAN {
         ch_sicilian_junctions_tsv = SICILIAN_PROCESS_CI_10X.out.sicilian_junctions_tsv
     } else {
         // Set an empty sicilian junctions file
-        ch_sicilian_junctions_tsv = Channel.empty()
+        SICILIAN_CREATE_PLACEHOLDER()
+        ch_sicilian_junctions_tsv = SICILIAN_CREATE_PLACEHOLDER.out.tsv
     }
 
 
